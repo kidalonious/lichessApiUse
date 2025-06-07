@@ -16,8 +16,8 @@ func createClient() (*resty.Client, error) {
 		return client, nil
 	}
 	godotenv.Load()
-	apikey := os.Getenv("APIKEY")
-	url := os.Getenv("URL")
+	apikey := os.Getenv("DBAPIKEY")
+	url := os.Getenv("DBURL")
 
 	if apikey == "" || url == "" {
 		return nil, fmt.Errorf("apikey or url does not exist")

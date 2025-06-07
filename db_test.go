@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func testInsertUser(t *testing.T) {
+func TestInsertUser(t *testing.T) {
 	client, err := createClient()
 	if err != nil {
 		t.Errorf("error making client")
