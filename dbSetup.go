@@ -27,7 +27,8 @@ func createClient() (*resty.Client, error) {
 		SetBaseURL(url).
 		SetHeader("apikey", apikey).
         SetHeader("Authorization", "Bearer "+apikey).
-        SetHeader("Content-Type", "application/json")
+        SetHeader("Content-Type", "application/json").
+		SetHeader("Prefer", "return=presentation")
 	return client, nil
 }
 
