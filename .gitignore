@@ -3,3 +3,4 @@ go.sum
 *.exe
 *.out
 *.log
+.env
