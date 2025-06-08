@@ -41,19 +41,19 @@ func TestDeleteUser(t *testing.T) {
 	}
 
 	// Ensure user exists before deletion
-	err = insertUser("testUser", 1300, client)
+	err = insertUser("testUserToDelete", 1300, client)
 	if err != nil {
 		t.Fatalf("insertUser setup failed: %v", err)
 	}
 
 	// Delete user
-	err = deleteUser("testUser", client)
+	err = deleteUser("testUserToDelete", client)
 	if err != nil {
 		t.Fatalf("deleteUser failed: %v", err)
 	}
 
 	// Verify deletion
-	_, err = getUser("testUser", client)
+	_, err = getUser("testUserToDelete", client)
 	if err == nil {
 		t.Errorf("expected getUser to fail after deletion, but it succeeded")
 	}
