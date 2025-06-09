@@ -50,17 +50,16 @@ func parsePgnFile(pgnPath string) ([]Pgn, error) {
 
 		moves := game.Moves()
 		moveStr := ""
-		tempGame := chess.NewGame()
 		for i, move := range moves {
+			correctNotation := notation.Encode(game.Positions()[i], move)
 			if i % 2 == 0 {
-				moveStr += fmt.Sprintf("%d. %s ", i/2 + 1, notation.Encode(tempGame.Position(), move))
+				moveStr += fmt.Sprintf("%d. %s ", i/2 + 1, correctNotation)
 			} else {
-				moveStr += fmt.Sprintf("%s ", notation.Encode(tempGame.Position(), move))
+				moveStr += fmt.Sprintf("%s ", correctNotation)
 			}
-			tempGame.Position().Update(move)
 		}
 		pgn.Moves = moveStr
-		
+
 		filePgns = append(filePgns, pgn)
 	}
 
