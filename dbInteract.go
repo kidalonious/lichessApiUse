@@ -184,6 +184,6 @@ func getGameByPlayers(whiteplayer string, blackplayer string, client *resty.Clie
 	if len(result) == 0 {
 		return nil, fmt.Errorf("no game exists with whiteplayer %s and blackplayer %s", whiteplayer, blackplayer)
 	}
-
+	
 	return result, nil
 }
