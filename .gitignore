@@ -4,3 +4,4 @@ go.sum
 *.out
 *.log
 .env
+*.pgn
