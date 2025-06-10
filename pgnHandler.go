@@ -75,10 +75,12 @@ func PgnToGame(pgn Pgn) Game {
 	game.Opening = pgn.Headers["Opening"]
 	game.Result = pgn.Headers["Termination"]
 	game.Gamemoves = pgn.Moves
-	if pgn.Headers["Winner"] == "1-0" {
+	if pgn.Headers["Result"] == "1-0" {
 		game.Winner = pgn.Headers["White"]
-	} else {
+	} else if pgn.Headers["Result"] == "0-1" {
 		game.Winner = pgn.Headers["Black"]
+	} else {
+		game.Winner = ""
 	}
 	return game
 }
