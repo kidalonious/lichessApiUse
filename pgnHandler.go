@@ -68,7 +68,7 @@ func parsePgnFile(pgnPath string) ([]Pgn, error) {
 }
 
 func getPgns() ([]string, error) {
-	var pgnFilePaths []string
+	var pgnFilepaths []string
 	pathBegin := "pgns"
 	dirEntries, err := os.ReadDir("pgns")
 	if err != nil {
@@ -77,8 +77,8 @@ func getPgns() ([]string, error) {
 
 	for _, entry := range dirEntries {
 		filepath := filepath.Join(pathBegin, entry.Name())
-		pgnFilePaths = append(pgnFilePaths, filepath)
+		pgnFilepaths = append(pgnFilepaths, filepath)
 	}
 
-	return pgnFilePaths, nil
+	return pgnFilepaths, nil
 }
