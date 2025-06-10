@@ -52,7 +52,8 @@ func createClient() (*resty.Client, error) {
 	return client, nil
 }
 
-func insertUser(username string, rating int, client *resty.Client) error {
+func insertUser(username string, rating int) error {
+	client, err := createClient()
 	response, err := client.R(). 
 		SetBody([]map[string]any{{
 			"username": username,
@@ -71,7 +72,8 @@ func insertUser(username string, rating int, client *resty.Client) error {
 	return nil
 }
 
-func deleteUser(username string, client *resty.Client) error {
+func deleteUser(username string) error {
+	client, err := createClient()
 	response, err := client.R().
 		SetQueryParam("username", "eq." + username).
 		Delete(userExtension)
@@ -86,7 +88,8 @@ func deleteUser(username string, client *resty.Client) error {
 	return nil
 }
 
-func getUser(username string, client *resty.Client) (*User, error) {
+func getUser(username string) (*User, error) {
+	client, err := createClient()
 	var result []User
 
 	response, err := client.R().
@@ -108,7 +111,8 @@ func getUser(username string, client *resty.Client) (*User, error) {
 	return &result[0], nil
 }
 
-func insertGame(whiteplayer string, blackplayer string, winner string, opening string, gamemoves string, result string, client *resty.Client) error {
+func insertGame(whiteplayer string, blackplayer string, winner string, opening string, gamemoves string, result string) error {
+	client, err := createClient()
 	response, err := client.R().
 		SetBody([]map[string]any{{
 			"whiteplayer": whiteplayer,
@@ -131,7 +135,14 @@ func insertGame(whiteplayer string, blackplayer string, winner string, opening s
 	return nil
 }
 
-func deleteGame(gameid int, client *resty.Client) error {
+func insertGames(games []Game) {
+	for _, game := range games {
+		insertGame(game.Whiteplayer, game.Blackplayer, game.Winner, game.Opening, game.Gamemoves, game.Result)
+	}
+}
+
+func deleteGame(gameid int) error {
+	client, err := createClient()
 	gameidString := strconv.Itoa(gameid)
 	response, err := client.R().
 		SetQueryParam("gameid", "eq."+gameidString). 
@@ -146,7 +157,8 @@ func deleteGame(gameid int, client *resty.Client) error {
 	return nil
 }
 
-func getGame(gameid int, client *resty.Client) (*Game, error) {
+func getGame(gameid int) (*Game, error) {
+	client, err := createClient()
 	var result []Game
 	gameidString := strconv.Itoa(gameid)
 	response, err := client.R().
@@ -166,7 +178,8 @@ func getGame(gameid int, client *resty.Client) (*Game, error) {
 	return &result[0], nil
 }
 
-func getGameByPlayers(whiteplayer string, blackplayer string, client *resty.Client) ([]Game, error) {
+func getGameByPlayers(whiteplayer string, blackplayer string) ([]Game, error) {
+	client, err := createClient()
 	var result []Game
 	response, err := client.R(). 
 		SetQueryParams(map[string]string{
