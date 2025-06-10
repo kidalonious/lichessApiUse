@@ -75,6 +75,12 @@ func InsertUser(username string, rating int) error {
 	return nil
 }
 
+func InsertUsers(users []User) {
+	for _, user := range users {
+		InsertUser(user.Username, user.Rating)
+	}
+}
+
 func DeleteUser(username string) error {
 	client, err := CreateClient()
 	if err != nil {

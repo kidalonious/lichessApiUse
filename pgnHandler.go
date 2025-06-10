@@ -118,3 +118,7 @@ func PgnsToUsers(pgns []Pgn) []User {
 	}
 	return users
 }
+
+func PgnsToStructs(pgns []Pgn) ([]Game, []User) {
+	return PgnsToGames(pgns), PgnsToUsers(pgns)
+}

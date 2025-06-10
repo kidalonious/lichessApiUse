@@ -44,12 +44,20 @@ func chunker(slice []Pgn, chunksize int) [][]Pgn {
 
 func doChunk(chunk []Pgn, wg *sync.WaitGroup) {
     defer wg.Done()
-    operableChunk := PgnsToGames(chunk)
-    InsertGames(operableChunk)
-    for _, game := range operableChunk {
-        InsertUser(game.Whiteplayer, 0)
-        InsertUser(game.Blackplayer, 0)
-    }
+    gameChunk, userChunk := PgnsToStructs(chunk)
+    var insertWg sync.WaitGroup
+    insertWg.Add(2)
+    go func() {
+        defer insertWg.Done()
+        InsertGames(gameChunk)
+    } ()
+
+    go func() {
+        defer insertWg.Done()
+        InsertUsers(userChunk)
+    } ()
+
+    insertWg.Wait()
 }
 
 func doChunks(chunks [][]Pgn) {
