@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/notnil/chess"
 )
@@ -92,4 +93,28 @@ func PgnsToGames(pgns []Pgn) []Game {
 		games = append(games, game)
 	}
 	return games
+}
+
+func PgnToUser(pgn Pgn) (User, User) {
+	var whiteUser User
+	var blackUser User
+	whiteUser.Username = pgn.Headers["White"]
+	whiteUser.Rating, _ = strconv.Atoi(pgn.Headers["WhiteElo"])
+	blackUser.Username = pgn.Headers["Black"]
+	blackUser.Rating, _ = strconv.Atoi(pgn.Headers["BlackElo"])
+	return whiteUser, blackUser
+}
+
+func PgnsToUsers(pgns []Pgn) []User {
+	userMap := make(map[User]struct{})
+	for _, pgn := range pgns {
+		whiteUser, blackUser := PgnToUser(pgn)
+		userMap[whiteUser] = struct{}{}
+		userMap[blackUser] = struct{}{}
+	}
+	users := make([]User, 0, len(userMap))
+	for user := range userMap {
+		users = append(users, user)
+	}
+	return users
 }

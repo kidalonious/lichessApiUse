@@ -46,6 +46,10 @@ func doChunk(chunk []Pgn, wg *sync.WaitGroup) {
     defer wg.Done()
     operableChunk := PgnsToGames(chunk)
     InsertGames(operableChunk)
+    for _, game := range operableChunk {
+        InsertUser(game.Whiteplayer, 0)
+        InsertUser(game.Blackplayer, 0)
+    }
 }
 
 func doChunks(chunks [][]Pgn) {
