@@ -54,6 +54,9 @@ func createClient() (*resty.Client, error) {
 
 func insertUser(username string, rating int) error {
 	client, err := createClient()
+	if err != nil {
+		return fmt.Errorf("error creating client: %w", err)
+	}
 	response, err := client.R(). 
 		SetBody([]map[string]any{{
 			"username": username,
@@ -74,6 +77,9 @@ func insertUser(username string, rating int) error {
 
 func deleteUser(username string) error {
 	client, err := createClient()
+	if err != nil {
+		return fmt.Errorf("error creating client: %w", err)
+	}
 	response, err := client.R().
 		SetQueryParam("username", "eq." + username).
 		Delete(userExtension)
@@ -90,6 +96,9 @@ func deleteUser(username string) error {
 
 func getUser(username string) (*User, error) {
 	client, err := createClient()
+	if err != nil {
+		return nil, fmt.Errorf("error creating client: %w", err)
+	}
 	var result []User
 
 	response, err := client.R().
@@ -113,6 +122,9 @@ func getUser(username string) (*User, error) {
 
 func insertGame(whiteplayer string, blackplayer string, winner string, opening string, gamemoves string, result string) error {
 	client, err := createClient()
+	if err != nil {
+		return fmt.Errorf("error creating client: %w", err)
+	}
 	response, err := client.R().
 		SetBody([]map[string]any{{
 			"whiteplayer": whiteplayer,
@@ -143,6 +155,9 @@ func insertGames(games []Game) {
 
 func deleteGame(gameid int) error {
 	client, err := createClient()
+	if err != nil {
+		return fmt.Errorf("error creating client: %w", err)
+	}
 	gameidString := strconv.Itoa(gameid)
 	response, err := client.R().
 		SetQueryParam("gameid", "eq."+gameidString). 
@@ -159,6 +174,9 @@ func deleteGame(gameid int) error {
 
 func getGame(gameid int) (*Game, error) {
 	client, err := createClient()
+	if err != nil {
+		return nil, fmt.Errorf("error creating client: %w", err)
+	}
 	var result []Game
 	gameidString := strconv.Itoa(gameid)
 	response, err := client.R().
@@ -180,6 +198,9 @@ func getGame(gameid int) (*Game, error) {
 
 func getGameByPlayers(whiteplayer string, blackplayer string) ([]Game, error) {
 	client, err := createClient()
+	if err != nil {
+		return nil, fmt.Errorf("error creating client: %w", err)
+	}
 	var result []Game
 	response, err := client.R(). 
 		SetQueryParams(map[string]string{
