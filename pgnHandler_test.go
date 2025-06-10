@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"path/filepath"
 )
 
 func TestParsePgnFile(t *testing.T) {
@@ -68,5 +69,56 @@ func TestParsePgnFile(t *testing.T) {
 	}
 	if !strings.Contains(pgn.Moves, "3. Bb5") {
 		t.Errorf("Moves string missing '3. Bb5': %s", pgn.Moves)
+	}
+}
+
+func TestGetPgns(t *testing.T) {
+	// Ensure the pgns directory exists
+	pgnsDir := "pgns"
+	if _, err := os.Stat(pgnsDir); os.IsNotExist(err) {
+		t.Fatalf("pgns directory does not exist: %v", err)
+	}
+
+	// Dummy files to create
+	testFiles := []string{"test1.pgn", "test2.pgn"}
+
+	// Create the dummy files
+	for _, fileName := range testFiles {
+		filePath := filepath.Join(pgnsDir, fileName)
+		err := os.WriteFile(filePath, []byte("dummy PGN content"), 0644)
+		if err != nil {
+			t.Fatalf("failed to create test file %s: %v", fileName, err)
+		}
+	}
+
+	// Clean up after test by removing the files we created
+	defer func() {
+		for _, fileName := range testFiles {
+			filePath := filepath.Join(pgnsDir, fileName)
+			os.Remove(filePath) // Ignoring error intentionally
+		}
+	}()
+
+	// Run the function under test
+	pgnFiles, err := getPgns()
+	if err != nil {
+		t.Fatalf("getPgns() returned an error: %v", err)
+	}
+
+	// Check that the test files are in the output
+	expectedPaths := []string{
+		filepath.Join(pgnsDir, "test1.pgn"),
+		filepath.Join(pgnsDir, "test2.pgn"),
+	}
+
+	found := make(map[string]bool)
+	for _, path := range pgnFiles {
+		found[path] = true
+	}
+
+	for _, expected := range expectedPaths {
+		if !found[expected] {
+			t.Errorf("expected file path %s not found in result", expected)
+		}
 	}
 }
