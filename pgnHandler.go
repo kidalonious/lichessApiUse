@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/notnil/chess"
 )
@@ -64,4 +65,20 @@ func parsePgnFile(pgnPath string) ([]Pgn, error) {
 	}
 
 	return filePgns, nil
+}
+
+func getPgns() ([]string, error) {
+	var pgnFilePaths []string
+	pathBegin := "pgns"
+	dirEntries, err := os.ReadDir("pgns")
+	if err != nil {
+		return nil, fmt.Errorf("read directory returned error: %w", err)
+	}
+
+	for _, entry := range dirEntries {
+		filepath := filepath.Join(pathBegin, entry.Name())
+		pgnFilePaths = append(pgnFilePaths, filepath)
+	}
+
+	return pgnFilePaths, nil
 }
