@@ -82,3 +82,27 @@ func getPgns() ([]string, error) {
 
 	return pgnFilepaths, nil
 }
+
+func pgnToGame(pgn Pgn) Game {
+	var game Game
+	game.Blackplayer = pgn.Headers["Black"]
+	game.Whiteplayer = pgn.Headers["White"]
+	game.Opening = pgn.Headers["Opening"]
+	game.Result = pgn.Headers["Termination"]
+	game.Gamemoves = pgn.Moves
+	if pgn.Headers["Winner"] == "1-0" {
+		game.Winner = pgn.Headers["White"]
+	} else {
+		game.Winner = pgn.Headers["Black"]
+	}
+	return game
+}
+
+func pgnsToGames(pgns []Pgn) []Game {
+	var games []Game
+	for _, pgn := range pgns {
+		game := pgnToGame(pgn)
+		games = append(games, game)
+	}
+	return games
+}
