@@ -12,14 +12,14 @@ func main() {
         return 
     }
     chunksize := 10
-    var wg *sync.WaitGroup
+    var wg sync.WaitGroup
     for i, pgnFile := range pgnFilesList {
         gamesList, err := ParsePgnFile(pgnFile)
         if err != nil {
             fmt.Println("error in parsing pgnfile (inside loop): %w", err)
             return
         }
-        fmt.Printf("parsing pgn file #%d", i+1)
+        fmt.Printf("parsing pgn file #%d\n", i+1)
         chunks := chunker(gamesList, chunksize)
         wg.Add(1)
         go func(chunks [][]Pgn) {
