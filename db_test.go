@@ -8,18 +8,18 @@ import (
 func TestInsertUser(t *testing.T) {
 
 	// Clean up any pre-existing user (ignore error)
-	_ = deleteUser("testUser")
+	_ = DeleteUser("testUser")
 
 	// Insert user
-	err := insertUser("testUser", 1215)
+	err := InsertUser("testUser", 1215)
 	if err != nil {
-		t.Fatalf("insertUser failed: %v", err)
+		t.Fatalf("InsertUser failed: %v", err)
 	}
 
 	// Confirm user was inserted
-	user, err := getUser("testUser")
+	user, err := GetUser("testUser")
 	if err != nil {
-		t.Fatalf("getUser failed after insert: %v", err)
+		t.Fatalf("GetUser failed after insert: %v", err)
 	}
 
 	if user.Username != "testUser" || user.Rating != 1215 {
@@ -27,27 +27,27 @@ func TestInsertUser(t *testing.T) {
 	}
 
 	// Clean up
-	_ = deleteUser("testUser")
+	_ = DeleteUser("testUser")
 }
 
 func TestDeleteUser(t *testing.T) {
 
 	// Ensure user exists before deletion
-	err := insertUser("testUserToDelete", 1300)
+	err := InsertUser("testUserToDelete", 1300)
 	if err != nil {
-		t.Fatalf("insertUser setup failed: %v", err)
+		t.Fatalf("InsertUser setup failed: %v", err)
 	}
 
 	// Delete user
-	err = deleteUser("testUserToDelete")
+	err = DeleteUser("testUserToDelete")
 	if err != nil {
-		t.Fatalf("deleteUser failed: %v", err)
+		t.Fatalf("DeleteUser failed: %v", err)
 	}
 
 	// Verify deletion
-	_, err = getUser("testUserToDelete")
+	_, err = GetUser("testUserToDelete")
 	if err == nil {
-		t.Errorf("expected getUser to fail after deletion, but it succeeded")
+		t.Errorf("expected GetUser to fail after deletion, but it succeeded")
 	}
 }
 
@@ -57,18 +57,18 @@ func TestGetUser(t *testing.T) {
 	rating := 1700
 
 	// Clean up any previous test runs
-	_ = deleteUser(username)
+	_ = DeleteUser(username)
 
 	// Insert user to get
-	err := insertUser(username, rating)
+	err := InsertUser(username, rating)
 	if err != nil {
-		t.Fatalf("insertUser failed: %v", err)
+		t.Fatalf("InsertUser failed: %v", err)
 	}
 
 	// Get the user
-	user, err := getUser(username)
+	user, err := GetUser(username)
 	if err != nil {
-		t.Fatalf("getUser failed: %v", err)
+		t.Fatalf("GetUser failed: %v", err)
 	}
 
 	if user.Username != username || user.Rating != rating {
@@ -76,22 +76,22 @@ func TestGetUser(t *testing.T) {
 	}
 
 	// Cleanup
-	_ = deleteUser(username)
+	_ = DeleteUser(username)
 }
 
 func TestInsertGame(t *testing.T) {
 
 	white := "InsertTestWhite"
 	black := "InsertTestBlack"
-	err := insertGame(white, black, "white", "King's Indian", "e4 e5 Nf3", "resign")
+	err := InsertGame(white, black, "white", "King's Indian", "e4 e5 Nf3", "resign")
 	if err != nil {
-		t.Fatalf("insertGame failed: %v", err)
+		t.Fatalf("InsertGame failed: %v", err)
 	}
 
 	// Validate insert by fetching it back
-	games, err := getGameByPlayers(white, black)
+	games, err := GetGameByPlayers(white, black)
 	if err != nil {
-		t.Fatalf("getGameByPlayers failed: %v", err)
+		t.Fatalf("GetGameByPlayers failed: %v", err)
 	}
 
 	if len(games) == 0 {
@@ -99,7 +99,7 @@ func TestInsertGame(t *testing.T) {
 	}
 
 	// Cleanup
-	err = deleteGame(games[0].Gameid)
+	err = DeleteGame(games[0].Gameid)
 	if err != nil {
 		t.Errorf("cleanup failed: %v", err)
 	}
@@ -109,20 +109,20 @@ func TestGetGame(t *testing.T) {
 
 	white := "GetTestWhite"
 	black := "GetTestBlack"
-	err := insertGame(white, black, "draw", "Italian Game", "e4 e5 Nf3 Nc6 Bc4", "resign")
+	err := InsertGame(white, black, "draw", "Italian Game", "e4 e5 Nf3 Nc6 Bc4", "resign")
 	if err != nil {
-		t.Fatalf("insertGame failed: %v", err)
+		t.Fatalf("InsertGame failed: %v", err)
 	}
 
-	games, err := getGameByPlayers(white, black)
+	games, err := GetGameByPlayers(white, black)
 	if err != nil {
-		t.Fatalf("getGameByPlayers failed: %v", err)
+		t.Fatalf("GetGameByPlayers failed: %v", err)
 	}
 
 	gameID := games[0].Gameid
-	game, err := getGame(gameID)
+	game, err := GetGame(gameID)
 	if err != nil {
-		t.Fatalf("getGame failed: %v", err)
+		t.Fatalf("GetGame failed: %v", err)
 	}
 
 	if game.Whiteplayer != white || game.Blackplayer != black {
@@ -130,7 +130,7 @@ func TestGetGame(t *testing.T) {
 	}
 
 	// Cleanup
-	err = deleteGame(gameID)
+	err = DeleteGame(gameID)
 	if err != nil {
 		t.Errorf("cleanup failed: %v", err)
 	}
@@ -140,24 +140,24 @@ func TestDeleteGame(t *testing.T) {
 
 	white := "DeleteTestWhite"
 	black := "DeleteTestBlack"
-	err := insertGame(white, black, "black", "Scotch Game", "e4 e5 Nf3 Nc6 d4", "resign")
+	err := InsertGame(white, black, "black", "Scotch Game", "e4 e5 Nf3 Nc6 d4", "resign")
 	if err != nil {
-		t.Fatalf("insertGame failed: %v", err)
+		t.Fatalf("InsertGame failed: %v", err)
 	}
 
-	games, err := getGameByPlayers(white, black)
+	games, err := GetGameByPlayers(white, black)
 	if err != nil {
-		t.Fatalf("getGameByPlayers failed: %v", err)
+		t.Fatalf("GetGameByPlayers failed: %v", err)
 	}
 	gameID := games[0].Gameid
 
-	err = deleteGame(gameID)
+	err = DeleteGame(gameID)
 	if err != nil {
-		t.Fatalf("deleteGame failed: %v", err)
+		t.Fatalf("DeleteGame failed: %v", err)
 	}
 
 	// Verify deletion
-	_, err = getGame(gameID)
+	_, err = GetGame(gameID)
 	if err == nil {
 		t.Errorf("expected error retrieving deleted game, got none")
 	}

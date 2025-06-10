@@ -32,7 +32,7 @@ func TestParsePgnFile(t *testing.T) {
 	tmpFile.Close()
 
 	// Call the function to test
-	pgns, err := parsePgnFile(tmpFile.Name())
+	pgns, err := ParsePgnFile(tmpFile.Name())
 	if err != nil {
 		t.Fatalf("parsePgnFile returned error: %v", err)
 	}
@@ -100,7 +100,7 @@ func TestGetPgns(t *testing.T) {
 	}()
 
 	// Run the function under test
-	pgnFiles, err := getPgns()
+	pgnFiles, err := GetPgns()
 	if err != nil {
 		t.Fatalf("getPgns() returned an error: %v", err)
 	}

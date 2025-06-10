@@ -31,7 +31,7 @@ type Game struct {
 	Result string `json:"result"`
 }
 
-func createClient() (*resty.Client, error) {
+func CreateClient() (*resty.Client, error) {
 	if client != nil {
 		return client, nil
 	}
@@ -52,8 +52,8 @@ func createClient() (*resty.Client, error) {
 	return client, nil
 }
 
-func insertUser(username string, rating int) error {
-	client, err := createClient()
+func InsertUser(username string, rating int) error {
+	client, err := CreateClient()
 	if err != nil {
 		return fmt.Errorf("error creating client: %w", err)
 	}
@@ -75,8 +75,8 @@ func insertUser(username string, rating int) error {
 	return nil
 }
 
-func deleteUser(username string) error {
-	client, err := createClient()
+func DeleteUser(username string) error {
+	client, err := CreateClient()
 	if err != nil {
 		return fmt.Errorf("error creating client: %w", err)
 	}
@@ -94,8 +94,8 @@ func deleteUser(username string) error {
 	return nil
 }
 
-func getUser(username string) (*User, error) {
-	client, err := createClient()
+func GetUser(username string) (*User, error) {
+	client, err := CreateClient()
 	if err != nil {
 		return nil, fmt.Errorf("error creating client: %w", err)
 	}
@@ -120,8 +120,8 @@ func getUser(username string) (*User, error) {
 	return &result[0], nil
 }
 
-func insertGame(whiteplayer string, blackplayer string, winner string, opening string, gamemoves string, result string) error {
-	client, err := createClient()
+func InsertGame(whiteplayer string, blackplayer string, winner string, opening string, gamemoves string, result string) error {
+	client, err := CreateClient()
 	if err != nil {
 		return fmt.Errorf("error creating client: %w", err)
 	}
@@ -147,14 +147,14 @@ func insertGame(whiteplayer string, blackplayer string, winner string, opening s
 	return nil
 }
 
-func insertGames(games []Game) {
+func InsertGames(games []Game) {
 	for _, game := range games {
-		insertGame(game.Whiteplayer, game.Blackplayer, game.Winner, game.Opening, game.Gamemoves, game.Result)
+		InsertGame(game.Whiteplayer, game.Blackplayer, game.Winner, game.Opening, game.Gamemoves, game.Result)
 	}
 }
 
-func deleteGame(gameid int) error {
-	client, err := createClient()
+func DeleteGame(gameid int) error {
+	client, err := CreateClient()
 	if err != nil {
 		return fmt.Errorf("error creating client: %w", err)
 	}
@@ -172,8 +172,8 @@ func deleteGame(gameid int) error {
 	return nil
 }
 
-func getGame(gameid int) (*Game, error) {
-	client, err := createClient()
+func GetGame(gameid int) (*Game, error) {
+	client, err := CreateClient()
 	if err != nil {
 		return nil, fmt.Errorf("error creating client: %w", err)
 	}
@@ -196,8 +196,8 @@ func getGame(gameid int) (*Game, error) {
 	return &result[0], nil
 }
 
-func getGameByPlayers(whiteplayer string, blackplayer string) ([]Game, error) {
-	client, err := createClient()
+func GetGameByPlayers(whiteplayer string, blackplayer string) ([]Game, error) {
+	client, err := CreateClient()
 	if err != nil {
 		return nil, fmt.Errorf("error creating client: %w", err)
 	}

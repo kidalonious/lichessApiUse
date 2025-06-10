@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-    pgnFilesList, err := getPgns()
+    pgnFilesList, err := GetPgns()
     if err != nil {
         fmt.Println("error in getting pgnfile: %w", err)
         return 
@@ -14,7 +14,7 @@ func main() {
     chunksize := 10
     var wg *sync.WaitGroup
     for i, pgnFile := range pgnFilesList {
-        gamesList, err := parsePgnFile(pgnFile)
+        gamesList, err := ParsePgnFile(pgnFile)
         if err != nil {
             fmt.Println("error in parsing pgnfile (inside loop): %w", err)
             return
@@ -44,8 +44,8 @@ func chunker(slice []Pgn, chunksize int) [][]Pgn {
 
 func doChunk(chunk []Pgn, wg *sync.WaitGroup) {
     defer wg.Done()
-    operableChunk := pgnsToGames(chunk)
-    insertGames(operableChunk)
+    operableChunk := PgnsToGames(chunk)
+    InsertGames(operableChunk)
 }
 
 func doChunks(chunks [][]Pgn) {

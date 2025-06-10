@@ -28,7 +28,7 @@ type Pgn struct {
 	Moves string
 }
 
-func parsePgnFile(pgnPath string) ([]Pgn, error) {
+func ParsePgnFile(pgnPath string) ([]Pgn, error) {
 	var filePgns []Pgn
 	f, err := os.Open(pgnPath)
 	if err != nil {
@@ -67,7 +67,7 @@ func parsePgnFile(pgnPath string) ([]Pgn, error) {
 	return filePgns, nil
 }
 
-func getPgns() ([]string, error) {
+func GetPgns() ([]string, error) {
 	var pgnFilepaths []string
 	pathBegin := "pgns"
 	dirEntries, err := os.ReadDir("pgns")
@@ -83,7 +83,7 @@ func getPgns() ([]string, error) {
 	return pgnFilepaths, nil
 }
 
-func pgnToGame(pgn Pgn) Game {
+func PgnToGame(pgn Pgn) Game {
 	var game Game
 	game.Blackplayer = pgn.Headers["Black"]
 	game.Whiteplayer = pgn.Headers["White"]
@@ -98,10 +98,10 @@ func pgnToGame(pgn Pgn) Game {
 	return game
 }
 
-func pgnsToGames(pgns []Pgn) []Game {
+func PgnsToGames(pgns []Pgn) []Game {
 	var games []Game
 	for _, pgn := range pgns {
-		game := pgnToGame(pgn)
+		game := PgnToGame(pgn)
 		games = append(games, game)
 	}
 	return games
